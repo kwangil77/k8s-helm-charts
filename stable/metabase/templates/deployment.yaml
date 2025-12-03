@@ -126,8 +126,17 @@ spec:
           - name: MB_SESSION_COOKIES
             value: {{ .Values.session.sessionCookies | quote }}
           {{- end }}
+          {{- if .Values.monitoring.enabled }}
+          - name: MB_PROMETHEUS_SERVER_PORT
+            value: {{ .Values.monitoring.port }}
+          {{- end }}
           ports:
-            - containerPort: {{ .Values.service.internalPort }}
+            - name: http
+              containerPort: {{ .Values.service.internalPort }}
+          {{- if .Values.monitoring.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.monitoring.port }}
+          {{- end }}
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.path }}

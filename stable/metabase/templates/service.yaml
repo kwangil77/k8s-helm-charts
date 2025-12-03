@@ -25,7 +25,13 @@ spec:
       nodePort: {{ .Values.service.nodePort }}
 {{- end}}
       protocol: TCP
-      name: {{ .Values.service.name }}
+      name: http
+{{- if .Values.monitoring.enabled }}
+    - port: {{ .Values.monitoring.port }}
+      targetPort: {{ .Values.monitoring.port }}
+      protocol: TCP
+      name: metrics
+{{- end }}
   selector:
     app: {{ template "metabase.name" . }}
     release: {{ .Release.Name }}
