@@ -128,7 +128,7 @@ spec:
           {{- end }}
           {{- if .Values.monitoring.enabled }}
           - name: MB_PROMETHEUS_SERVER_PORT
-            value: {{ .Values.monitoring.port }}
+            value: {{ .Values.monitoring.port | quote }}
           {{- end }}
           ports:
             - name: http
